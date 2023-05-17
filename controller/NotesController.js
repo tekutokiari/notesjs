@@ -1,0 +1,85 @@
+const { default: mongoose } = require('mongoose');
+const Note = require('../models/NotesModel');
+
+//Search all the notes
+const index = async (req, res, next) => {
+  try {
+    if (req.query.page && req.query.limit) {
+      await Note.paginate(
+        {},
+        { page: req.query.page, limit: req.query.limit }
+      ).then((response) => {
+        res.status(200).json({
+          response,
+        });
+      });
+    } else {
+      await Note.find().then((response) => {
+        res.status(200).json({
+          response,
+        });
+      });
+    }
+  } catch (error) {
+    req.status(400).json({
+      message: `Error occured => ${error}`,
+    });
+  }
+};
+
+//Query for a note by noteID
+const show = async (req, res, next) => {
+  try {
+    let noteID = req.body.noteID;
+    await Note.findById(noteID).then((response) => {
+      res.status(200).json({
+        response,
+      });
+    });
+  } catch (error) {
+    res.status(400).json({
+      message: `Error occured => ${error}`,
+    });
+  }
+};
+
+const addnote = async (req, res, next) => {
+  try {
+    let note = new Note({
+      noteID: new mongoose.Types.ObjectId(),
+      note_message: req.body.note_message,
+      user_id: req.user.id,
+    });
+    await note.save().then((response) => {
+      res.json({
+        message: `Note added`,
+      });
+    });
+  } catch (error) {
+    res.json({
+      message: `Error occured => ${error}`,
+    });
+  }
+};
+
+const deletenote = async (req, res, next) => {
+  try {
+    let noteID = req.body.noteID;
+    await Note.findByIdAndRemove(noteID).then((response) => {
+      res.json({
+        response: `Note deleted`,
+      });
+    });
+  } catch (error) {
+    res.json({
+      message: `Error occured => ${error}`,
+    });
+  }
+};
+
+module.exports = {
+  index,
+  show,
+  addnote,
+  deletenote,
+};
