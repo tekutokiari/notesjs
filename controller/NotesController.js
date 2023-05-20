@@ -37,7 +37,7 @@ const show = async (req, res, next) => {
   }
 };
 
-const addnote = async (req, res, next) => {
+const addNote = async (req, res, next) => {
   try {
     let note = new Note({
       note_id: new mongoose.Types.ObjectId(),
@@ -55,7 +55,7 @@ const addnote = async (req, res, next) => {
   }
 };
 
-const deletenote = async (req, res, next) => {
+const deleteNote = async (req, res, next) => {
   try {
     let noteID = req.body.noteID;
     await Note.findByIdAndRemove(noteID);
@@ -72,6 +72,6 @@ const deletenote = async (req, res, next) => {
 module.exports = {
   index,
   show,
-  addnote,
-  deletenote,
+  addNote,
+  deleteNote,
 };

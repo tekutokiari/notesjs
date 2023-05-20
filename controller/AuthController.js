@@ -35,7 +35,7 @@ const login = async (req, res, next) => {
         process.env.ACCESS_TOKEN_SECRET,
         { expiresIn: process.env.ACCESS_TOKEN_EXPIRE_TIME }
       );
-      const refreshtoken = jwt.sign(
+      const refreshToken = jwt.sign(
         { email: user.email },
         process.env.REFRESH_TOKEN_SECRET,
         { expiresIn: process.env.REFRESH_TOKEN_EXPIRE_TIME }
@@ -43,7 +43,7 @@ const login = async (req, res, next) => {
       res.status(200).json({
         message: 'Login successful',
         token,
-        refreshtoken,
+        refreshToken,
       });
     } else {
       res.json({
@@ -59,10 +59,10 @@ const login = async (req, res, next) => {
 
 const refresh = async (req, res, next) => {
   try {
-    const refreshtoken = req.body.refreshtoken;
+    const refreshToken = req.body.refreshToken;
 
     const verification = jwt.verify(
-      refreshtoken,
+      refreshToken,
       process.env.REFRESH_TOKEN_SECRET
     );
     if (verification) {
@@ -71,11 +71,11 @@ const refresh = async (req, res, next) => {
         process.env.ACCESS_TOKEN_SECRET,
         { expiresIn: process.env.ACCESS_TOKEN_EXPIRE_TIME }
       );
-      let refreshtoken = req.body.refreshtoken;
+      let refreshToken = req.body.refreshToken;
       res.status(200).json({
         message: 'Token refreshed',
         token,
-        refreshtoken,
+        refreshToken,
       });
     }
   } catch (error) {
