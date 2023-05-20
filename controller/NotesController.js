@@ -31,10 +31,9 @@ const index = async (req, res, next) => {
 const show = async (req, res, next) => {
   try {
     let noteID = req.body.noteID;
-    await Note.findById(noteID).then((response) => {
-      res.status(200).json({
-        response,
-      });
+    await Note.findById(noteID);
+    res.status(200).json({
+      response,
     });
   } catch (error) {
     res.status(400).json({
@@ -50,10 +49,9 @@ const addnote = async (req, res, next) => {
       note: req.body.note_message,
       user_id: req.user.id,
     });
-    await note.save().then((response) => {
-      res.json({
-        message: `Note added`,
-      });
+    await note.save();
+    res.json({
+      message: `Note added`,
     });
   } catch (error) {
     res.json({
@@ -61,15 +59,13 @@ const addnote = async (req, res, next) => {
     });
   }
 };
-//!
 
 const deletenote = async (req, res, next) => {
   try {
     let noteID = req.body.noteID;
-    await Note.findByIdAndRemove(noteID).then((response) => {
-      res.json({
-        response: `Note deleted`,
-      });
+    await Note.findByIdAndRemove(noteID);
+    res.json({
+      response: `Note deleted`,
     });
   } catch (error) {
     res.json({
