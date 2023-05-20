@@ -5,10 +5,10 @@ const mongoosePaginate = require('mongoose-paginate-v2');
 
 const noteSchema = new Schema(
   {
-    noteID: {
+    note_id: {
       type: Schema.Types.ObjectId,
     },
-    note_message: {
+    note: {
       type: String,
     },
     user_id: {

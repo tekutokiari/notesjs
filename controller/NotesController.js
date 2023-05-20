@@ -46,8 +46,8 @@ const show = async (req, res, next) => {
 const addnote = async (req, res, next) => {
   try {
     let note = new Note({
-      noteID: new mongoose.Types.ObjectId(),
-      note_message: req.body.note_message,
+      note_id: new mongoose.Types.ObjectId(),
+      note: req.body.note_message,
       user_id: req.user.id,
     });
     await note.save().then((response) => {
@@ -61,6 +61,7 @@ const addnote = async (req, res, next) => {
     });
   }
 };
+//!
 
 const deletenote = async (req, res, next) => {
   try {

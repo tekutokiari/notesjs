@@ -7,9 +7,7 @@ const register = async (req, res, next) => {
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
     const user = new User({
-      username: req.body.username,
       email: req.body.email,
-      phone: req.body.phone,
       password: hashedPassword,
     });
 
@@ -26,21 +24,19 @@ const register = async (req, res, next) => {
 
 const login = async (req, res, next) => {
   try {
-    const username = req.body.username;
+    const email = req.body.email;
     const password = req.body.password;
 
-    const user = await User.findOne({
-      $or: [{ email: username }, { phone: username }, { username }],
-    });
+    const user = await User.findOne({ email });
     const compare = bcrypt.compare(password, user.password);
     if (compare) {
       const token = jwt.sign(
-        { name: user.username, id: user._id },
+        { email: user.email, id: user._id },
         process.env.ACCESS_TOKEN_SECRET,
         { expiresIn: process.env.ACCESS_TOKEN_EXPIRE_TIME }
       );
       const refreshtoken = jwt.sign(
-        { name: user.username },
+        { email: user.email },
         process.env.REFRESH_TOKEN_SECRET,
         { expiresIn: process.env.REFRESH_TOKEN_EXPIRE_TIME }
       );
