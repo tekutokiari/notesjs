@@ -5,19 +5,14 @@ const Note = require('../models/NotesModel');
 const index = async (req, res, next) => {
   try {
     if (req.query.page && req.query.limit) {
-      await Note.paginate(
-        {},
-        { page: req.query.page, limit: req.query.limit }
-      ).then((response) => {
-        res.status(200).json({
-          response,
-        });
+      await Note.paginate({}, { page: req.query.page, limit: req.query.limit });
+      res.status(200).json({
+        response,
       });
     } else {
-      await Note.find().then((response) => {
-        res.status(200).json({
-          response,
-        });
+      await Note.find();
+      res.status(200).json({
+        response,
       });
     }
   } catch (error) {
