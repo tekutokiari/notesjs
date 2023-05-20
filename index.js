@@ -1,7 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
-const bodyParser = require('body-parser');
 
 const dotenv = require('dotenv');
 dotenv.config();
@@ -18,8 +17,8 @@ const db = mongoose.connection;
 const app = express();
 
 app.use(morgan('dev'));
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
@@ -35,4 +34,4 @@ db.once('open', () => {
 });
 
 app.use('/api/notes', NotesRoutes);
-app.use('/api', UserRoute);
+app.use('/api/auth', UserRoute);
